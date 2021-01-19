@@ -337,7 +337,7 @@ impl Account {
         S: Into<String>,
         F: Into<f64>,
     {
-        let sell: OrderRequest = OrderRequest {
+        let request: OrderRequest = OrderRequest {
             symbol: symbol.into(),
             qty: qty.into(),
             price,
@@ -345,7 +345,7 @@ impl Account {
             order_type: order_type.into(),
             time_in_force: execution_type.into(),
         };
-        let order = self.build_order(sell);
+        let order = self.build_order(request);
         let request = build_signed_request(order, self.recv_window)?;
         let data = self.client.post_signed(API_V3_ORDER, &request)?;
         let transaction: Transaction = from_str(data.as_str())?;
@@ -370,7 +370,7 @@ impl Account {
         S: Into<String>,
         F: Into<f64>,
     {
-        let sell: OrderRequest = OrderRequest {
+        let request: OrderRequest = OrderRequest {
             symbol: symbol.into(),
             qty: qty.into(),
             price,
@@ -378,7 +378,7 @@ impl Account {
             order_type: order_type.into(),
             time_in_force: execution_type.into(),
         };
-        let order = self.build_order(sell);
+        let order = self.build_order(request);
         let request = build_signed_request(order, self.recv_window)?;
         let data = self.client.post_signed(API_V3_ORDER_TEST, &request)?;
         let _: TestResponse = from_str(data.as_str())?;
@@ -440,12 +440,14 @@ impl Account {
 
         order_parameters.insert("symbol".into(), order.symbol);
         order_parameters.insert("side".into(), order.order_side);
-        order_parameters.insert("type".into(), order.order_type);
+        order_parameters.insert("type".into(), order.order_type.clone());
         order_parameters.insert("quantity".into(), order.qty.to_string());
 
         if order.price != 0.0 {
             order_parameters.insert("price".into(), order.price.to_string());
-            order_parameters.insert("timeInForce".into(), order.time_in_force);
+            if order.order_type != "LIMIT_MAKER" {
+                order_parameters.insert("timeInForce".into(), order.time_in_force);
+            }
         }
 
         order_parameters

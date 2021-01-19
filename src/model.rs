@@ -153,17 +153,21 @@ pub struct Transaction {
     pub order_id: u64,
     pub client_order_id: String,
     pub transact_time: u64,
-    #[serde(with = "string_or_float")]
+    #[serde(with = "string_or_float", default)]
     pub price: f64,
-    #[serde(with = "string_or_float")]    
+    #[serde(with = "string_or_float", default)]
     pub orig_qty: f64,
-    #[serde(with = "string_or_float")]    
+    #[serde(with = "string_or_float", default)]
     pub executed_qty: f64,
-    #[serde(with = "string_or_float")]    
+    #[serde(with = "string_or_float", default)]
     pub cummulative_quote_qty: f64,
+    #[serde(default)]
     pub status: String,
+    #[serde(default)]
     pub time_in_force: String,
+    #[serde(default)]
     pub side: String,
+    #[serde(default)]
     pub fills: Vec<FillInfo>,
 }
 
@@ -172,9 +176,9 @@ pub struct Transaction {
 pub struct FillInfo {
     #[serde(with = "string_or_float")]
     pub price: f64,
-    #[serde(with = "string_or_float")]    
+    #[serde(with = "string_or_float")]
     pub qty: f64,
-    #[serde(with = "string_or_float")]    
+    #[serde(with = "string_or_float")]
     pub commission: f64,
     pub commission_asset: String,
     pub trade_id: Option<u64>,
