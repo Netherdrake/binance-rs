@@ -104,6 +104,17 @@ impl Account {
         Ok(order)
     }
 
+    // All current open orders
+    pub fn get_all_withdrawals(&self) -> Result<Withdrawals> {
+        let parameters: BTreeMap<String, String> = BTreeMap::new();
+
+        let request = build_signed_request(parameters, self.recv_window)?;
+        let data = self.client.get_signed("/wapi/v3/withdrawHistory.html", &request)?;
+
+        let withdrawals: Withdrawals = from_str(data.as_str())?;
+        Ok(withdrawals)
+    }
+
     // Check an order's status
     pub fn order_status<S>(&self, symbol: S, order_id: u64) -> Result<Order>
     where

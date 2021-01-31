@@ -191,6 +191,29 @@ pub struct FillInfo {
 #[serde(rename_all = "camelCase")]
 pub struct TestResponse {}
 
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Withdrawal {
+    #[serde(with = "string_or_float", default)]
+    pub amount: f64,
+    pub transaction_fee: f64,
+    pub address: String,
+    pub withdraw_order_id: String,
+    pub tx_id: String,
+    pub id: String,
+    pub asset: String,
+    pub apply_time: u64,
+    pub status: u8,
+    pub network: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Withdrawals {
+    pub withdraw_list: Vec<Withdrawal>,
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct OrderBook {
