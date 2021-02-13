@@ -407,17 +407,17 @@ pub struct OrderTradeEvent {
     #[serde(rename = "f")]
     pub time_in_force: String,
 
-    #[serde(rename = "q")]
-    pub qty: String,
+    #[serde(rename = "q", with = "string_or_float")]
+    pub qty: f64,
 
-    #[serde(rename = "p")]
-    pub price: String,
+    #[serde(rename = "p", with = "string_or_float")]
+    pub price: f64,
 
     #[serde(skip, rename = "P")]
     pub p_ignore: String,
 
-    #[serde(skip, rename = "F")]
-    pub f_ignore: String,
+    #[serde(rename = "F", with = "string_or_float")]
+    pub iceberg_qty: f64,
 
     #[serde(skip)]
     pub g: i32,
@@ -437,23 +437,26 @@ pub struct OrderTradeEvent {
     #[serde(rename = "i")]
     pub order_id: u64,
 
-    #[serde(rename = "l")]
-    pub qty_last_filled_trade: String,
+    #[serde(rename = "l", with = "string_or_float")]
+    pub qty_last_filled_trade: f64,
 
-    #[serde(rename = "z")]
-    pub accumulated_qty_filled_trades: String,
+    #[serde(rename = "z", with = "string_or_float")]
+    pub accumulated_qty_filled_trades: f64,
 
-    #[serde(rename = "L")]
-    pub price_last_filled_trade: String,
+    #[serde(rename = "L", with = "string_or_float")]
+    pub price_last_filled_trade: f64,
 
-    #[serde(rename = "n")]
-    pub commission: String,
+    #[serde(rename = "n", with = "string_or_float")]
+    pub commission: f64,
 
     #[serde(skip, rename = "N")]
     pub asset_commisioned: Option<String>,
 
+    #[serde(rename = "O")]
+    pub order_time: u64,
+
     #[serde(rename = "T")]
-    pub trade_order_time: u64,
+    pub trade_execution_time: u64,
 
     #[serde(rename = "t")]
     pub trade_id: i64,
